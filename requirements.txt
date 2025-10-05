@@ -1,0 +1,14 @@
+# Core server
+fastapi>=0.110.0
+uvicorn[standard]>=0.23.0
+python-dotenv>=1.0.0
+requests>=2.31.0
+
+# Crypto and web3 utils used by Dat.py
+rsa>=4.9
+eth-account>=0.10.0
+web3>=6.0.0
+
+# Alith / LazAI SDK (ensure this is installed per project docs)
+# If alith is not on PyPI for you, install it from source or your private index
+alith

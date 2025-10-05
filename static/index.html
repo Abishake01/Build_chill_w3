@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LazAI Intelligence Hub</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <i class="fas fa-brain"></i>
+          <h1>LazAI Intelligence Hub</h1>
+        </div>
+        <div class="header-actions">
+          <button class="btn-secondary" id="toggleTheme">
+            <i class="fas fa-moon"></i>
+          </button>
+          <button class="btn-primary" id="newChat">
+            <i class="fas fa-plus"></i> New Chat
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <h3><i class="fas fa-database"></i> Data Sources</h3>
+          <div class="file-manager">
+            <div class="file-item active" data-file-id="2346">
+              <i class="fas fa-file-alt"></i>
+              <span>Personal Profile (ID: 2346)</span>
+            </div>
+            <button class="btn-add-file" id="addFile">
+              <i class="fas fa-plus"></i> Add File
+            </button>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3><i class="fas fa-history"></i> Recent Queries</h3>
+          <div class="query-history" id="queryHistory">
+            <div class="query-item">
+              <i class="fas fa-search"></i>
+              <span>What are my main skills?</span>
+            </div>
+            <div class="query-item">
+              <i class="fas fa-search"></i>
+              <span>Summarize my background</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3><i class="fas fa-lightbulb"></i> Quick Actions</h3>
+          <div class="quick-actions">
+            <button class="quick-btn" data-query="Summarize the main points">
+              <i class="fas fa-compress"></i> Summarize
+            </button>
+            <button class="quick-btn" data-query="What are the key skills mentioned?">
+              <i class="fas fa-tags"></i> Extract Skills
+            </button>
+            <button class="quick-btn" data-query="What technologies are mentioned?">
+              <i class="fas fa-code"></i> Find Tech
+            </button>
+            <button class="quick-btn" data-query="What are the main interests?">
+              <i class="fas fa-heart"></i> Interests
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Chat Interface -->
+      <main class="chat-container">
+        <div class="chat-header">
+          <h2><i class="fas fa-comments"></i> AI Data Assistant</h2>
+          <div class="chat-controls">
+            <button class="btn-icon" id="clearChat" title="Clear Chat">
+              <i class="fas fa-trash"></i>
+            </button>
+            <button class="btn-icon" id="exportChat" title="Export Chat">
+              <i class="fas fa-download"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+          <div class="message ai-message">
+            <div class="message-avatar">
+              <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-content">
+              <p>Hello! I'm your LazAI Data Assistant. I can help you analyze and query your encrypted data. What would you like to know?</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-input-container">
+          <div class="input-wrapper">
+            <input type="text" id="chatInput" placeholder="Ask me anything about your data..." />
+            <button id="sendMessage" class="btn-send">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+          <div class="input-suggestions" id="inputSuggestions">
+            <button class="suggestion-btn" data-query="What are my main skills and expertise?">
+              <i class="fas fa-user-graduate"></i> Skills & Expertise
+            </button>
+            <button class="suggestion-btn" data-query="What technologies do I work with?">
+              <i class="fas fa-laptop-code"></i> Technologies
+            </button>
+            <button class="suggestion-btn" data-query="What are my main interests and passions?">
+              <i class="fas fa-heart"></i> Interests
+            </button>
+          </div>
+        </div>
+      </main>
+
+      <!-- Analytics Panel -->
+      <aside class="analytics-panel">
+        <div class="analytics-header">
+          <h3><i class="fas fa-chart-line"></i> Data Analytics</h3>
+          <button class="btn-icon" id="refreshAnalytics">
+            <i class="fas fa-sync-alt"></i>
+          </button>
+        </div>
+
+        <div class="analytics-content">
+          <div class="metric-card">
+            <div class="metric-icon">
+              <i class="fas fa-database"></i>
+            </div>
+            <div class="metric-info">
+              <span class="metric-value" id="totalQueries">0</span>
+              <span class="metric-label">Total Queries</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="metric-info">
+              <span class="metric-value" id="avgResponseTime">0ms</span>
+              <span class="metric-label">Avg Response</span>
+            </div>
+          </div>
+
+          <div class="chart-container">
+            <h4>Query Categories</h4>
+            <canvas id="queryChart"></canvas>
+          </div>
+
+          <div class="insights-container">
+            <h4><i class="fas fa-lightbulb"></i> AI Insights</h4>
+            <div class="insight-item">
+              <i class="fas fa-info-circle"></i>
+              <span>Your data contains information about AI, Web3, and Python development</span>
+            </div>
+            <div class="insight-item">
+              <i class="fas fa-trending-up"></i>
+              <span>Most queries focus on technical skills and experience</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- File Upload Modal -->
+    <div class="modal" id="fileModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3><i class="fas fa-upload"></i> Add New Data Source</h3>
+          <button class="btn-close" id="closeModal">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="upload-options">
+            <div class="upload-option">
+              <h4>Upload File</h4>
+              <input type="file" id="fileUpload" accept=".txt,.pdf,.doc,.docx" />
+              <label for="fileUpload" class="file-upload-label">
+                <i class="fas fa-cloud-upload-alt"></i>
+                Choose File
+              </label>
+            </div>
+            <div class="upload-option">
+              <h4>Paste Text</h4>
+              <textarea id="textInput" placeholder="Paste your text here..."></textarea>
+            </div>
+            <div class="upload-option">
+              <h4>File URL</h4>
+              <input type="url" id="urlInput" placeholder="Enter file URL..." />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" id="cancelUpload">Cancel</button>
+          <button class="btn-primary" id="confirmUpload">Add Data Source</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Processing your query...</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
