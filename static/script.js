@@ -170,10 +170,13 @@ class LazAIApp {
         throw new Error(result.error.message);
       }
       
+      // Update analytics with successful query
+      this.updateQueryAnalytics(query, 'rag', true);
       return result;
     } catch (error) {
       // Fallback to demo endpoint if RAG fails
       console.log('RAG query failed, trying demo endpoint:', error.message);
+      this.updateQueryAnalytics(query, 'rag', false);
       return await this.queryDemoData(query);
     }
   }
@@ -251,6 +254,39 @@ class LazAIApp {
     this.updateAnalytics();
   }
 
+  updateQueryAnalytics(query, type, success) {
+    // Categorize query based on keywords
+    const queryLower = query.toLowerCase();
+    let category = 'General';
+    
+    if (queryLower.includes('skill') || queryLower.includes('expertise') || queryLower.includes('know')) {
+      category = 'Skills & Expertise';
+    } else if (queryLower.includes('tech') || queryLower.includes('framework') || queryLower.includes('language')) {
+      category = 'Technologies';
+    } else if (queryLower.includes('interest') || queryLower.includes('passion') || queryLower.includes('love')) {
+      category = 'Interests';
+    }
+    
+    // Update analytics
+    if (!this.analytics.queryCategories[category]) {
+      this.analytics.queryCategories[category] = 0;
+    }
+    this.analytics.queryCategories[category]++;
+    
+    // Track success/failure
+    if (!this.analytics.querySuccess) {
+      this.analytics.querySuccess = { success: 0, failure: 0 };
+    }
+    
+    if (success) {
+      this.analytics.querySuccess.success++;
+    } else {
+      this.analytics.querySuccess.failure++;
+    }
+    
+    this.updateAnalytics();
+  }
+
   updateAnalytics() {
     // Update metrics
     document.getElementById('totalQueries').textContent = this.analytics.totalQueries;
@@ -301,15 +337,28 @@ class LazAIApp {
 
   updateChart() {
     if (this.chart) {
-      // Simulate query categorization based on keywords
-      const categories = {
-        'Skills & Expertise': this.analytics.totalQueries * 0.4,
-        'Technologies': this.analytics.totalQueries * 0.3,
-        'Interests': this.analytics.totalQueries * 0.2,
-        'General': this.analytics.totalQueries * 0.1
-      };
+      // Use real analytics data if available, otherwise use defaults
+      const categories = this.analytics.queryCategories;
+      const total = Object.values(categories).reduce((sum, count) => sum + count, 0);
       
-      this.chart.data.datasets[0].data = Object.values(categories);
+      if (total > 0) {
+        // Use real data
+        this.chart.data.datasets[0].data = [
+          categories['Skills & Expertise'] || 0,
+          categories['Technologies'] || 0,
+          categories['Interests'] || 0,
+          categories['General'] || 0
+        ];
+      } else {
+        // Use default distribution
+        this.chart.data.datasets[0].data = [
+          Math.floor(this.analytics.totalQueries * 0.4),
+          Math.floor(this.analytics.totalQueries * 0.3),
+          Math.floor(this.analytics.totalQueries * 0.2),
+          Math.floor(this.analytics.totalQueries * 0.1)
+        ];
+      }
+      
       this.chart.update();
     }
   }
