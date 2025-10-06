@@ -27,7 +27,7 @@ load_dotenv()
 PRIVATE_KEY = os.getenv("PRIVATE_KEY")
 LLM_BASE_URL = os.getenv("LLM_BASE_URL")
 LLM_API_KEY = os.getenv("LLM_API_KEY")
-# LLM_BASE_URL = os.getenv("LLM_BASE_URL")
+# RSA_PRIVATE_KEY_BASE64 = os.getenv("RSA_PRIVATE_KEY_BASE64")
 # DSTACK_API_KEY = os.getenv("DSTACK_API_KEY")
 
 
@@ -35,7 +35,7 @@ LLM_API_KEY = os.getenv("LLM_API_KEY")
 os.environ["PRIVATE_KEY"] = PRIVATE_KEY
 os.environ["LLM_BASE_URL"] = LLM_BASE_URL
 os.environ["LLM_API_KEY"] = LLM_API_KEY
-# os.environ["LLM_BASE_URL"] = LLM_BASE_URL
+# os.environ["RSA_PRIVATE_KEY_BASE64"] = RSA_PRIVATE_KEY_BASE64
 # os.environ["DSTACK_API_KEY"] = DSTACK_API_KEY
 
 
