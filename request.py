@@ -19,9 +19,6 @@ except Exception as e:
 print("try to get query account")
 
 url = client.get_query_node(node)[1]
-# Fallback to local server if URL is missing or lacks scheme
-if not url or not (url.startswith("http://") or url.startswith("https://")):
-    url = "http://127.0.0.1:8000"
 print(url)
 headers = client.get_request_headers(node)
 print("request headers:", headers)
@@ -31,7 +28,7 @@ print(
         f"{url}/query/rag",
         headers=headers,
         json={
-            "file_id": 2346, #change with your file_id 
+            "file_id": 10, #change with your file_id 
             "query": "summarise the best character?",
         },
     ).json(),
